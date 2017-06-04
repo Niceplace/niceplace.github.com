@@ -3,73 +3,73 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>niceplace.github.io/technology/chrome-self-signed-certificates/</loc>
+    <loc>/technology/chrome-self-signed-certificates/</loc>
     <lastmod>2017-07-27T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>niceplace.github.io/personal/</loc>
+    <loc>/personal/</loc>
   </url>
   
   <url>
-    <loc>niceplace.github.io/technology/</loc>
+    <loc>/technology/</loc>
     <lastmod>2017-07-27T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>niceplace.github.io/archives/</loc>
+    <loc>/archives/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>niceplace.github.io/categories/</loc>
+    <loc>/categories/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>niceplace.github.io/tags/certificates/</loc>
-    <lastmod>2017-07-27T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>niceplace.github.io/tags/linux/</loc>
+    <loc>/tags/certificates/</loc>
     <lastmod>2017-07-27T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>niceplace.github.io/</loc>
+    <loc>/tags/linux/</loc>
     <lastmod>2017-07-27T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>niceplace.github.io/tags/security/</loc>
+    <loc>/</loc>
     <lastmod>2017-07-27T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>niceplace.github.io/tags/ssl/</loc>
+    <loc>/tags/security/</loc>
     <lastmod>2017-07-27T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>niceplace.github.io/categories/sysadmin/</loc>
+    <loc>/tags/ssl/</loc>
     <lastmod>2017-07-27T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>niceplace.github.io/tags/</loc>
+    <loc>/categories/sysadmin/</loc>
     <lastmod>2017-07-27T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>niceplace.github.io/tags/ubuntu/</loc>
+    <loc>/tags/</loc>
+    <lastmod>2017-07-27T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/ubuntu/</loc>
     <lastmod>2017-07-27T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
