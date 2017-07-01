@@ -23,23 +23,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Hugo 0.21">
     <meta name="theme" content="Tranquilpeak 0.3.1-BETA">
-    <title>Chrome v58&#43; and self-signed certificates</title>
+    <title>Ansible and my development enviroment</title>
     <meta name="author" content="Simon">
-    <meta name="keywords" content="security, linux, ubuntu, ssl, certificates, development, ansible, java, linux, ubuntu, python">
+    <meta name="keywords" content="technology, configuration&#34;, ansible, development, ansible, java, linux, ubuntu, python">
 
     <link rel="icon" href="/favicon.png">
     
 
     
-    <meta name="description" content="How to properly generate self-signed certificates so that Chrome v58&#43; accepts them">
-    <meta property="og:description" content="How to properly generate self-signed certificates so that Chrome v58&#43; accepts them">
+    <meta name="description" content="What I am using (software, configuration) in my development enviroment">
+    <meta property="og:description" content="What I am using (software, configuration) in my development enviroment">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="Chrome v58&#43; and self-signed certificates">
-    <meta property="og:url" content="/technology/chrome-self-signed-certificates/">
+    <meta property="og:title" content="Ansible and my development enviroment">
+    <meta property="og:url" content="/technology/my-software-choices/">
     <meta property="og:site_name" content="Niceplace&#39;s blog">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Niceplace&#39;s blog">
-    <meta name="twitter:description" content="How to properly generate self-signed certificates so that Chrome v58&#43; accepts them">
+    <meta name="twitter:description" content="What I am using (software, configuration) in my development enviroment">
     
     
 
@@ -51,7 +51,7 @@
     
 
     
-      <meta property="og:image" content="https://res.cloudinary.com/niceplace-github-io/image/upload/v1496551133/Chromev58andself-signedcertificates_edmbxz.png">
+      <meta property="og:image" content="https://res.cloudinary.com/niceplace-github-io/image/upload/v1496551133/Mydevelopmentenvironment_taqrb2.png">
     
     
     
@@ -223,14 +223,14 @@
             <div class="post-header main-content-wrap text-center">
   
     <h1 class="post-title" itemprop="headline">
-      Chrome v58&#43; and self-signed certificates
+      Ansible and my development enviroment
     </h1>
   
   <div class="postShorten-meta post-meta">
   
-    <time itemprop="datePublished" datetime="2017-07-27T00:00:00Z">
+    <time itemprop="datePublished" datetime="2017-07-01T00:00:00Z">
       
-   27, 2017
+   1, 2017
 
     </time>
   
@@ -250,89 +250,165 @@
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              <p>This is a short guide to make self-signed HTTPS certificates work with locally hosted web applications and Google Chrome&rsquo;s browser.
+              <p>This is a short introduction to Ansible and a description of my first project, the automation of the configuration of my development laptop.
 </p>
 
-<div class="alert warning ">
-  <p>Note : This has been tested on Ubuntu 16.04, some modifications may be needed to make it work on CentOS / MacOSX. Leave a suggestions in the comments if you had to change something I will update the post with it.</p>
-</div>
+<h2 id="link-to-project">Link to project</h2>
 
-<p>I&rsquo;m using self signed certificates for my applications that I locally use (a <a href="https://github.com/sameersbn/docker-redmine">dockerized redmine</a> in this case), not because I need the extra security but because I want to know how to configure it. Generating a certificate is rather easy and can be done with three short commands, given you have openssl installed.</p>
+<p>The project discussed in this post can be found <a href="https://github.com/Niceplace/config">on my github</a></p>
 
-<div class="alert warning ">
-  <p>I&rsquo;m showing the &ldquo;old&rdquo; and possibly invalid way of generating a self-signed certificate below for information purposes, the correct way to do it is shown at the end of the post.</p>
-</div>
+<h1 id="ansible">Ansible</h1>
+
+<p>I love Ansible! I am using it at work to automate the configuration of developer VMs. Compared to other configuration management tools (Chef, Puppet) it was my first choice because of its simplicity. My usage of Ansible is a bit limited since I only apply the configuration to a single computer at a time (its main purpose is to manage the configuration of multiple hosts at once) but I still gained some very valuable knowledge that can be applied in different situations.</p>
+
+<h2 id="some-vocabulary">Some vocabulary</h2>
+
+<p>Technical terms, buzzwords, foreign concepts! In order to prevent some unnecessary googling and question marks, here is a short list of useful terms related to Ansible and this project that may help explain the context. Most of the terms explained here are related to core concepts which also happen to be the name of the main directories in a playbook&rsquo;s layout but I also included a few other terms.</p>
+
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+<th>More information</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Playbook</td>
+<td>A playbook represents the desired state of the machine it will be applied on. The written configuration can also be used for documentation purposes.</td>
+<td><a href="http://docs.ansible.com/ansible/playbooks.html">Ansible docs - Playbooks</a></td>
+</tr>
+
+<tr>
+<td>Modules</td>
+<td>A module is a specific function of Ansible that replicates a well known command and its various parameters. (i.e. apt-get, yum, get_url - similar to curl or wget -, docker, etc.)</td>
+<td><a href="http://docs.ansible.com/ansible/modules.html">Ansible docs - Modules</a></td>
+</tr>
+
+<tr>
+<td>Roles</td>
+<td>A role contains a list of tasks. A role represents a series of tasks that are combined to configure an element of the playbook.</td>
+<td><a href="http://docs.ansible.com/ansible/playbooks_roles.html">Ansible docs - Roles</a></td>
+</tr>
+
+<tr>
+<td>Tasks</td>
+<td>A task is the smallest possible operation that can be performed in Ansible. It represents a single command with or without arguments, performed with the help of a module</td>
+<td><a href="http://docs.ansible.com/ansible/playbooks_intro.html#tasks-list">Ansible docs - Tasks</a></td>
+</tr>
+
+<tr>
+<td>Handlers</td>
+<td>A handler is a task that is triggered by another task (i.e. restart a service after a config change).</td>
+<td><a href="http://docs.ansible.com/ansible/glossary.html#term-handlers">Ansible docs - Handlers</a></td>
+</tr>
+
+<tr>
+<td>Meta</td>
+<td>The &ldquo;meta&rdquo; folder inside a role is used to declare dependencies to other roles.</td>
+<td><a href="http://docs.ansible.com/ansible/playbooks_roles.html#role-dependencies">Ansible docs - Meta</a></td>
+</tr>
+
+<tr>
+<td>Template</td>
+<td>Templates are made with Jinja2 templating, use these when you want to replace some values inside a file with variable content (i.e. a local settings.xml for maven).</td>
+<td><a href="http://docs.ansible.com/ansible/template_module.html">Ansible docs - Template</a></td>
+</tr>
+
+<tr>
+<td>Become</td>
+<td>Used in roles / tasks to represent privilege escalation (e.g. sudo).</td>
+<td><a href="http://docs.ansible.com/ansible/become.html">Ansible docs - Become</a></td>
+</tr>
+
+<tr>
+<td>Check mode</td>
+<td>Check mode is useful to check your playbook for syntax errors. It runs the full playbook except it does not apply any changes, it just checks if the execution would run properly. Note: not all modules support check mode.</td>
+<td><a href="http://docs.ansible.com/ansible/playbooks_checkmode.html">Ansible docs - Check mode</a></td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="best-practices">Best practices</h2>
+
+<p>To organize the content of my playbook, I followed the best practices for directory layout, as specified in the <a href="http://docs.ansible.com/ansible/playbooks_best_practices.html#directory-layout">Ansible docs - directory layout best practices</a>.</p>
+
+<p>I find that using best practices for directory layout really helps with maintaining the playbook. In most cases, one role represents one piece of software and its configuration so it makes it easy to make fixes and/or add new stuff to install.</p>
+
+<h2 id="under-the-hood">Under the hood</h2>
 
 <div class="alert info ">
-  <p>Replace <strong><em>$KEY</em></strong> with the filename you wish to name your private key.<br />
-Replace <strong><em>$CERTIFICATE_SIGNING_REQUEST</em></strong> with the filename you wish to name your certificate signing request.<br />
-Replace <strong><em>$CERTIFICATE</em></strong> with the filename you wish to name your certificate.</p>
+  <p>If you want to check out the documentations for all projects related to ansible, you can read it at <a href="http://docs.ansible.com/">docs.ansible.com</a>.<br />
+There is a container specific project <strong>Ansible Container</strong>, which I have not explored yet and also some information on the <strong>Ansible Tower</strong> project.</p>
 </div>
 
-<pre><code>openssl genrsa -out $KEY.key 2048
-openssl req -new -key $KEY.key -out $CERTIFICATE_SIGNING_REQUEST.csr
-openssl x509 -req -days 365 -in redmine.csr -signkey $KEY.key -out $CERTIFICATE.crt
+<p>One of the key points of Ansible is that its installation is very easy and it does not require live agents on all managed nodes (i.e. servers and/or personal computers). Once you have written your playbook, it simply connects via SSH to the node(s) that are to be managed, executes the necessary commands and then exits. This is a plus for me because because using Chef / Foreman to document &amp; automate the configuration of one single laptop is  the equivalent of using a hydraulic jackhammer to grind a few grains of peppercorn for my steak. For those who want to use Ansible to manage configurations at scale, it is worth mentioning that Ansible has been bought by Redhat some time ago and they offer enterprise grade solutions (Ansible Tower) that compete with Chef / Puppet and the likes.</p>
 
-# This helps strengthen server security with stronger DHE parameters
-# I have limited knowledge of what this means ;-)
-openssl dhparam -out dhparam.pem 2048
+<h2 id="installation">Installation</h2>
 
+<div class="alert info ">
+  <p>Note : When building a playbook, depending on which <a href="http://docs.ansible.com/ansible/modules_intro.html">module</a> you decide to use, the installations of other python packages might be necessary.</p>
+</div>
+
+<p>Ansible is a small (ish) Python program that is easily installed (in my case, on Ubuntu) with the help of a few commands.
+From the <a href="http://docs.ansible.com/ansible/intro_installation.html#latest-releases-via-apt-ubuntu">installation instructions</a>, its pretty straightforward :</p>
+
+<pre><code class="language-bash">$ sudo apt-get install software-properties-common
+$ sudo apt-add-repository ppa:ansible/ansible
+$ sudo apt-get update
+$ sudo apt-get install ansible
 </code></pre>
 
-<p>However, Google Chrome recently changed the rules with regards to how they validate certificates and it seems to have broken my setup. It started with SHA-1 not being safe anymore, and now it appreas that Chrome no longer accepts self signed certificates that rely on &ldquo;Common Name&rdquo;. I praise security for the world wide web but when it comes to local applications which I&rsquo;m only securing &ldquo;for fun&rdquo;, I wish there was a way I could just bypass the warning but hey, there&rsquo;s something more to learn !</p>
+<h2 id="using-modules">Using modules</h2>
 
-<p>It is worth mentionning that I had enabled HSTS in the nginx server bundled with my redmine installation which forces all connections to be HTTPS. If I had used Firefox I probably could have added an exception but HSTS does not allow me to just bypass the &ldquo;this site is not secured&rdquo; warning.</p>
-
-<p>If you have an &ldquo;old&rdquo; self-signed certificate that is not valid in Chrome anymore, here is a solution you could try to fix the problem.</p>
-
-<p><strong><em>Step 1 : Make sure that the old certificate is deleted from your Browser</em></strong></p>
-
-<p>In Chrome Settings -&gt; Advanced Settings (expand it) -&gt; HTTPS/SSL -&gt; Manage Certificates&hellip;<br />
-The, in the &ldquo;Authorities&rdquo; tab, look for the folder containing your local certificate (it was named &ldquo;Personal&rdquo; in my case) and delete it.</p>
-
-<p><strong><em>Step 2 : Generate a certificate that will be valid with Chrome !</em></strong><br />
-I found the solution <a href="https://serverfault.com/questions/845766/generating-a-self-signed-cert-with-openssl-that-works-in-chrome-58">here</a> and I believe it was written for Mac OSX.</p>
+<h2 id="validating-a-playbook">Validating a playbook</h2>
 
 <div class="alert info ">
-  <p>Here is an explanation for some of the parameters in the command below:</p>
-
-<p><strong><em>-keyout</em></strong> = the absolute/relative path for the private key file<br />
-<strong><em>-out</em></strong> = the absolute/relative path for the generated certificate<br />
-<strong><em>-subj</em></strong> = the hostname you want to use<br />
-<strong><em>-config</em></strong> = used to configure the subjectAltName parameter, you can use your hostname again</p>
+  <p>When running in check node, please note that not all modules support it and may throw errors that will halt the execution. The reason for this is that some technical challenges prevent every single possible command to be executed &ldquo;just to check the output&rdquo; without actually performing any operation. The <a href="http://docs.ansible.com/ansible/command_module.html#notes">command</a> and <a href="http://docs.ansible.com/ansible/shell_module.html">shell</a> modules are examples of this. In that case you might want to <a href="http://docs.ansible.com/ansible/playbooks_checkmode.html#information-about-check-mode-in-variables">ignore errors or skip the execution</a></p>
 </div>
 
-<pre><code>openssl req \
-    -newkey rsa:2048 \
-    -x509 \
-    -nodes \
-    -keyout server.key \
-    -new \
-    -out server.crt \
-    -subj /CN=dev.mycompany.com \
-    -reqexts SAN \
-    -extensions SAN \
-    -config &lt;(cat /System/Library/OpenSSL/openssl.cnf \
-        &lt;(printf '[SAN]\nsubjectAltName=DNS:dev.mycompany.com')) \
-    -sha256 \
-    -days 3650
+<p>When a playbook is newly created or updated, it is necessary to perform some basic validation on it to ensure that errors are avoided. The first validation that I do is run the playbook, using the <a href="http://docs.ansible.com/ansible/playbooks_checkmode.html">&ldquo;check mode&rdquo;</a>.</p>
+
+<div class="alert info ">
+  <p>Replace $HOSTS_INVENTORY_FILE with the (relative|absolute) path of your inventory file if you have one. If you don&rsquo;t need this you can remove the &ldquo;-i&rdquo; option.<br />
+Replace $PLAYBOOK_PATH with the absolute (relative|absolute) in the YAML playbook file.</p>
+</div>
+
+<pre><code class="language-bash">$ ansible-playbook -i $HOSTS_INVENTORY_FILE $PLAYBOOK_PATH --check
 </code></pre>
 
-<p><strong><em>Step 3 : Import the certificate in your local store</em></strong><br />
-The certificate can be imported with the certutil command as shown below.
-<div class="alert warning ">
-  <p>If you do not have the certutil command, you can obtain it by installing the libnss3-tools package <code>sudo apt-get install libnss3-tools -y</code></p>
-</div></p>
+<p>In my case, I use this comand :</p>
 
 <div class="alert info ">
-  <p>Replace <strong><em>$NICKNAME_FOR_CERT</em></strong> with a unique identifier to be attributed to your certificate<br />
-Replace <strong><em>$PATH_TO_CERT</em></strong> with an absolute/relative path towards your self signed certificate<br />
-<strong><em>&ldquo;P,,&rdquo;</em></strong> means to add the certificate in the Personal store</p>
+  <p>I use privilege escalation and the &ndash;ask-sudo-pass tells ansible to prompt me once for the sudo password before running the playbok.<br />
+It&rsquo;s not the only way to do this, you can also specify the sudo password directly with the &ndash;extra-vars flag <code>--extra-vars &quot;ansible_sudo_pass=$PASSWORD&quot;</code> (replace $PASSWORD with your sudo password)</p>
 </div>
 
-<p><code>certutil -d sql:$HOME/.pki/nssdb -A -t &quot;P,,&quot; -n $NICKNAME_FOR_CERT -i $PATH_TO_CERT</code></p>
+<pre><code class="language-bash">$ ansible-playbook -i hosts --ask-sudo-pass devenv.yml --check
+</code></pre>
 
-<p>Once I completed all these steps, I restarted my computer just to make sure everything was correctly updated (this habit is a courtesy of using Windows) and it worked ! The errors in Chrome were gone.</p>
+<p>Bear in mind that using the check mode does not cover all possible cases, but it helps clean up a lot of easy mistakes (quoting variables, errors in YAML parsing). The rest of the testing can be done by executing the playbook on a separate vm that mimics the current environment.</p>
+
+<h2 id="running-the-playbook">Running the playbook</h2>
+
+<p>Once you have passed validation and you are ready to execute the playbook, use the <code>ansible-playbook</code> command-line tool. It is the exact same command as running it in check mode, just without the <code>--check</code> flag.</p>
+
+<p>Generic command (-i flag is optional, please refer to the previous section for an explanation)</p>
+
+<pre><code class="language-bash">$ ansible-playbook -i $HOSTS_INVENTORY_FILE $PLAYBOOK_PATH
+</code></pre>
+
+<p>In my case, I use it like this :</p>
+
+<pre><code class="language-bash">$ ansible-playbook -i hosts --ask-sudo-pass devenv.yml
+</code></pre>
+
+<p>That&rsquo;s it for now ! There are many other topics I could explore with regards to Ansible but I wanted to keep the length of the post manageable.
+If you have any questions or you noticed errors in this post please don&rsquo;t hesitate to leave a comment and I will get back to you shortly.</p>
+
+<p>While writing this post, I was listening to : <a href="https://soundcloud.com/jaytechmusic/jaytech-music-podcast-114">Jaytech Music - Podcast 114</a></p>
               
             </div>
           </div>
@@ -344,15 +420,19 @@ Replace <strong><em>$PATH_TO_CERT</em></strong> with an absolute/relative path t
                   <div class="post-footer-tags">
                     <span class="text-color-light text-small"></span><br/>
                     
-  <a class="tag tag--primary tag--small" href="https://niceplace.github.io/tags/security/">security</a>
+  <a class="tag tag--primary tag--small" href="https://niceplace.github.io/tags/technology/">technology</a>
+
+  <a class="tag tag--primary tag--small" href="https://niceplace.github.io/tags/configuration/">configuration</a>
+
+  <a class="tag tag--primary tag--small" href="https://niceplace.github.io/tags/ansible/">ansible</a>
+
+  <a class="tag tag--primary tag--small" href="https://niceplace.github.io/tags/chef/">chef</a>
+
+  <a class="tag tag--primary tag--small" href="https://niceplace.github.io/tags/puppet/">puppet</a>
 
   <a class="tag tag--primary tag--small" href="https://niceplace.github.io/tags/linux/">linux</a>
 
   <a class="tag tag--primary tag--small" href="https://niceplace.github.io/tags/ubuntu/">ubuntu</a>
-
-  <a class="tag tag--primary tag--small" href="https://niceplace.github.io/tags/ssl/">ssl</a>
-
-  <a class="tag tag--primary tag--small" href="https://niceplace.github.io/tags/certificates/">certificates</a>
 
                   </div>
                 
@@ -364,7 +444,7 @@ Replace <strong><em>$PATH_TO_CERT</em></strong> with an absolute/relative path t
       
         <li class="post-action">
           
-            <a class="post-action-btn btn btn--disabled">
+            <a class="post-action-btn btn btn--default tooltip--top" href="/technology/chrome-self-signed-certificates/" data-tooltip="Chrome v58&#43; and self-signed certificates">
           
             <i class="fa fa-angle-left"></i>
             <span class="hide-xs hide-sm text-small icon-ml"></span>
@@ -372,7 +452,7 @@ Replace <strong><em>$PATH_TO_CERT</em></strong> with an absolute/relative path t
         </li>
         <li class="post-action">
           
-            <a class="post-action-btn btn btn--default tooltip--top" href="/technology/my-software-choices/" data-tooltip="Ansible and my development enviroment">
+            <a class="post-action-btn btn btn--disabled">
           
             <span class="hide-xs hide-sm text-small icon-mr"></span>
             <i class="fa fa-angle-right"></i>
@@ -389,17 +469,17 @@ Replace <strong><em>$PATH_TO_CERT</em></strong> with an absolute/relative path t
         </a>
       </li>
       <li class="post-action hide-xs">
-        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https%3a%2f%2fniceplace.github.io%2ftechnology%2fchrome-self-signed-certificates%2f">
+        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https%3a%2f%2fniceplace.github.io%2ftechnology%2fmy-software-choices%2f">
           <i class="fa fa-google-plus"></i>
         </a>
       </li>
       <li class="post-action hide-xs">
-        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fniceplace.github.io%2ftechnology%2fchrome-self-signed-certificates%2f">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fniceplace.github.io%2ftechnology%2fmy-software-choices%2f">
           <i class="fa fa-facebook-official"></i>
         </a>
       </li>
       <li class="post-action hide-xs">
-        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fniceplace.github.io%2ftechnology%2fchrome-self-signed-certificates%2f">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fniceplace.github.io%2ftechnology%2fmy-software-choices%2f">
           <i class="fa fa-twitter"></i>
         </a>
       </li>
@@ -460,7 +540,7 @@ Replace <strong><em>$PATH_TO_CERT</em></strong> with an absolute/relative path t
       
         <li class="post-action">
           
-            <a class="post-action-btn btn btn--disabled">
+            <a class="post-action-btn btn btn--default tooltip--top" href="/technology/chrome-self-signed-certificates/" data-tooltip="Chrome v58&#43; and self-signed certificates">
           
             <i class="fa fa-angle-left"></i>
             <span class="hide-xs hide-sm text-small icon-ml"></span>
@@ -468,7 +548,7 @@ Replace <strong><em>$PATH_TO_CERT</em></strong> with an absolute/relative path t
         </li>
         <li class="post-action">
           
-            <a class="post-action-btn btn btn--default tooltip--top" href="/technology/my-software-choices/" data-tooltip="Ansible and my development enviroment">
+            <a class="post-action-btn btn btn--disabled">
           
             <span class="hide-xs hide-sm text-small icon-mr"></span>
             <i class="fa fa-angle-right"></i>
@@ -485,17 +565,17 @@ Replace <strong><em>$PATH_TO_CERT</em></strong> with an absolute/relative path t
         </a>
       </li>
       <li class="post-action hide-xs">
-        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https%3a%2f%2fniceplace.github.io%2ftechnology%2fchrome-self-signed-certificates%2f">
+        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https%3a%2f%2fniceplace.github.io%2ftechnology%2fmy-software-choices%2f">
           <i class="fa fa-google-plus"></i>
         </a>
       </li>
       <li class="post-action hide-xs">
-        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fniceplace.github.io%2ftechnology%2fchrome-self-signed-certificates%2f">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fniceplace.github.io%2ftechnology%2fmy-software-choices%2f">
           <i class="fa fa-facebook-official"></i>
         </a>
       </li>
       <li class="post-action hide-xs">
-        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fniceplace.github.io%2ftechnology%2fchrome-self-signed-certificates%2f">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fniceplace.github.io%2ftechnology%2fmy-software-choices%2f">
           <i class="fa fa-twitter"></i>
         </a>
       </li>
@@ -522,17 +602,17 @@ Replace <strong><em>$PATH_TO_CERT</em></strong> with an absolute/relative path t
       <div id="share-options-bar" class="share-options-bar" data-behavior="4">
   <ul class="share-options">
     <li class="share-option">
-      <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3a%2f%2fniceplace.github.io%2ftechnology%2fchrome-self-signed-certificates%2f">
+      <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3a%2f%2fniceplace.github.io%2ftechnology%2fmy-software-choices%2f">
         <i class="fa fa-google-plus"></i><span></span>
       </a>
     </li>
     <li class="share-option">
-      <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fniceplace.github.io%2ftechnology%2fchrome-self-signed-certificates%2f">
+      <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fniceplace.github.io%2ftechnology%2fmy-software-choices%2f">
         <i class="fa fa-facebook-official"></i><span></span>
       </a>
     </li>
     <li class="share-option">
-      <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fniceplace.github.io%2ftechnology%2fchrome-self-signed-certificates%2f">
+      <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fniceplace.github.io%2ftechnology%2fmy-software-choices%2f">
         <i class="fa fa-twitter"></i><span></span>
       </a>
     </li>
@@ -640,9 +720,9 @@ $(document).ready(function() {
     
       <script>
         var disqus_config = function () {
-          this.page.url = 'https:\/\/niceplace.github.io\/technology\/chrome-self-signed-certificates\/';
+          this.page.url = 'https:\/\/niceplace.github.io\/technology\/my-software-choices\/';
           
-            this.page.identifier = '\/technology\/chrome-self-signed-certificates\/'
+            this.page.identifier = '\/technology\/my-software-choices\/'
           
         };
         (function() {

@@ -21,5 +21,15 @@
 &lt;/p&gt;</description>
     </item>
     
+    <item>
+      <title>Ansible and my development enviroment</title>
+      <link>https://niceplace.github.io/technology/my-software-choices/</link>
+      <pubDate>Sat, 01 Jul 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://niceplace.github.io/technology/my-software-choices/</guid>
+      <description>&lt;p&gt;This is a short introduction to Ansible and a description of my first project, the automation of the configuration of my development laptop.
+&lt;/p&gt;</description>
+    </item>
+    
   </channel>
 </rss>
